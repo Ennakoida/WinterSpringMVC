@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="NoticeMapper">
+	<resultMap type="com.winter.spring.notice.domain.Notice" id="noticeResultMap">
+		<id     property="noticeNo"         column="NOTICE_NO"/>
+		<result property="noticeSubject"    column="NOTICE_SUBJECT"/>
+		<result property="noticeContent"    column="NOTICE_CONTENT"/>
+		<result property="noticeWriter"     column="NOTICE_WRITER"/>
+		<result property="nCreateDate"      column="N_CREATE_DATE"/>
+		<result property="nUpdateDate"      column="N_UPDATE_DATE"/>
+		<result property="noticeFilename"   column="NOTICE_FILENAME"/>
+		<result property="noticeFilepath"   column="NOTICE_FILEPATH"/>
+		<result property="noticeFilelength" column="NOTICE_FILELENGTH"/>
+	</resultMap>
+
+	<insert id="insertNotice">
+		INSERT INTO NOTICE_TBL VALUES(SEQ_NOTICE_NO.NEXTVAL, #{ noticeSubject }, #{ noticeContent }, #{ noticeWriter }, DEFAULT, DEFAULT, #{ noticeFilename }, #{ noticeFilepath }, #{ noticeFilelength })
+	</insert>
+
+	<select id="selectNoticeList" resultMap="noticeResultMap">
+		SELECT * FROM NOTICE_TBL
+	</select>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*) FROM NOTICE_TBL
+	</select>
+	
+<!-- 	<select id="selectNoticesByAll" resultMap="noticeResultMap"> -->
+<!-- 		SELECT * FROM NOTICE_TBL WHERE NOTICE_WRITER LIKE '%' || #{ searchKeyword } || '%' OR NOTICE_SUBJECT LIKE '%' || #{ searchKeyword } || '%' OR NOTICE_CONTENT LIKE '%' || #{ searchKeyword } || '%' -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="selectNoticesByWriter" resultMap="noticeResultMap"> -->
+<!-- 		SELECT * FROM NOTICE_TBL WHERE NOTICE_WRITER LIKE '%' || #{ searchKeyword } || '%' -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="selectNoticesByTitle" resultMap="noticeResultMap"> -->
+<!-- 		SELECT * FROM NOTICE_TBL WHERE NOTICE_SUBJECT LIKE '%' || #{ searchKeyword } || '%' -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="selectNoticesByContent" resultMap="noticeResultMap"> -->
+<!-- 		SELECT * FROM NOTICE_TBL WHERE NOTICE_CONTENT LIKE '%' || #{ searchKeyword } || '%' -->
+<!-- 	</select> -->
+	
+	<!-- 동적 쿼리 (choose when 사용) -->
+	<!-- 이전과 다르게 searchCondition값도 가져와야한다. -->
+	<select id="selectNoticesByKeyword" resultMap="noticeResultMap">
+		SELECT * FROM NOTICE_TBL
+		<if test="searchCondition == 'all'">
+			WHERE NOTICE_WRITER LIKE '%' || #{ searchKeyword } || '%' OR NOTICE_SUBJECT LIKE '%' || #{ searchKeyword } || '%' OR NOTICE_CONTENT LIKE '%' || #{ searchKeyword } || '%'
+		</if>
+		<if test="searchCondition == 'writer'">
+			WHERE NOTICE_WRITER LIKE '%' || #{ searchKeyword } || '%' 
+		</if>
+		<if test="searchCondition == 'title'">
+			WHERE NOTICE_SUBJECT LIKE '%' || #{ searchKeyword } || '%'
+		</if>
+		<if test="searchCondition == 'content'">
+			WHERE NOTICE_CONTENT LIKE '%' || #{ searchKeyword } || '%'
+		</if>
+	</select>
+	
+	<select id="selectListByKeywordCount" resultType="_int">
+		SELECT COUNT(*) FROM NOTICE_TBL
+		<if test="searchCondition == 'all'">
+			WHERE NOTICE_WRITER LIKE '%' || #{ searchKeyword } || '%' OR NOTICE_SUBJECT LIKE '%' || #{ searchKeyword } || '%' OR NOTICE_CONTENT LIKE '%' || #{ searchKeyword } || '%'
+		</if>
+		<if test="searchCondition == 'writer'">
+			WHERE NOTICE_WRITER LIKE '%' || #{ searchKeyword } || '%' 
+		</if>
+		<if test="searchCondition == 'title'">
+			WHERE NOTICE_SUBJECT LIKE '%' || #{ searchKeyword } || '%'
+		</if>
+		<if test="searchCondition == 'content'">
+			WHERE NOTICE_CONTENT LIKE '%' || #{ searchKeyword } || '%'
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- Application Loggers -->
+	<logger name="com.winter.spring">
+		<level value="info" />
+	</logger>
+	
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+	
+	<!-- 로깅 레벨 정리 -->
+	<!-- (ALL), DEBUG, INFO, WARN, ERROR, FATAL, (OFF) -->
+	<!-- 
+		1. jdbc.connection     : 열려있는 연결 수립 및 해제 이벤트를 기록. 연결 문제를 찾아내는데 유용함.
+		2. jdbc.sqltiming      : SQL문과 해당 SQL을 실행(수행)시키는데 걸린 시간 정보를 포함
+		3. jdbc.sqlonly        : SQL문만 로그를 남김. PreparedStatement일 경우 ?(위치홀더)값이 완전히 보임
+		4. jdbc.audit          : ResultSet을 제외한 모든 JDBC 호출 정보를 로그로 남김. 로그양이 많고, 필요하지 않으면 사용하지 않음.
+		5. jdbc.resultset      : ResultSet을 포함한 모든 JDBC 호출 정보를 로그로 남김. 로그양이 많음
+		6. jdbc.resultsettable : SQL 결과가 조회된 데이터의 table을 그려줌
+	 -->
+	 <logger name="jdbc.connection" additivity="false">
+	 	<level value="INFO" />
+	 	<appender-ref ref="console" />
+	 </logger>
+	 
+	 <logger name="jdbc.sqltiming" additivity="false">
+	 	<level value="INFO" />
+	 	<appender-ref ref="console" />
+	 </logger>
+	 
+	 <logger name="jdbc.sqlonly" additivity="false">
+	 	<level value="INFO" />
+	 	<appender-ref ref="console" />
+	 </logger>
+	 
+	 <logger name="jdbc.audit" additivity="false">
+	 	<level value="WARN" />
+	 	<appender-ref ref="console" />
+	 </logger>
+	 
+	 <logger name="jdbc.resultset" additivity="false">
+	 	<level value="WARN" />
+	 	<appender-ref ref="console" />
+	 </logger>
+	 
+	 <logger name="jdbc.resultsettable" additivity="false">
+	 	<level value="INFO" />
+	 	<appender-ref ref="console" />
+	 </logger>
+	
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="warn" />
+		<appender-ref ref="console" />
+	</root>
+	
+</log4j:configuration>
