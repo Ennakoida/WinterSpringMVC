@@ -4,11 +4,19 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
   
 <configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
 	<typeAliases>
 		<typeAlias type="com.winter.spring.member.domain.Member" alias="Member"/>
+		<typeAlias type="com.winter.spring.notice.domain.Notice" alias="Notice"/>
+		<typeAlias type="com.winter.spring.board.domain.Board" alias="Board"/>
+		<typeAlias type="com.winter.spring.board.domain.Reply" alias="Reply"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member/member-mapper.xml"/>
 		<mapper resource="mappers/notice-mapper.xml"/>
+		<mapper resource="mappers/board-mapper.xml"/>
+		<mapper resource="mappers/reply-mapper.xml"/>
 	</mappers>
 </configuration>

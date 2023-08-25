@@ -35,7 +35,10 @@
 				<c:forEach var="notice" items="${ nList }" varStatus="i">
 					<tr>
 						<td>${ i.count }</td> <!-- i.index도 가능하다. 단, index는 0부터, count는 1부터 -->
-						<td>${ notice.noticeSubject }</td>
+						<c:url var="detailUrl" value="/notice/detail.kh">
+							<c:param name="noticeNo" value="${ notice.noticeNo }"></c:param>
+						</c:url>
+						<td><a href="${ detailUrl }">${ notice.noticeSubject }</a></td>
 						<td>${ notice.noticeWriter }</td>
 						<td>
 							<!--  date format 설정 -->
@@ -82,10 +85,16 @@
 						</form>
 					</td>
 					<td>
-						<button>글쓰기</button>
+						<button type="button" onclick="insertNotice();">글쓰기</button>
 					</td>
 				</tr>
 			</tfoot>
 		</table>
+		
+		<script>
+			function insertNotice() {
+				location.href="/notice/insert.kh";
+			}
+		</script>
 	</body>
 </html>

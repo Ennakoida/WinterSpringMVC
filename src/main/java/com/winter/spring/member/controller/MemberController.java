@@ -92,15 +92,18 @@ public class MemberController {
 		}
 	}
 	
-	@RequestMapping(value="/member/mypage.kh", method = RequestMethod.GET)
+    @RequestMapping(value="/member/mypage.kh", method = {RequestMethod.GET, RequestMethod.POST}) // session을 이용하여 쿼리스트링 숨길때 // : GET, POST도 할거야. 다중으로 작성 가능
+//	@RequestMapping(value="/member/mypage.kh", method = RequestMethod.POST) // form method=post를 이용하여 쿼리스트링 숨길때
 	public String showMyPage(
 							// 쿼리스트링 받기 위해 @RequestParam 써줌
-							@RequestParam("memberId") String memberId
+							// @RequestParam("memberId") String memberId
+							HttpSession session
 							// 모델에 키와 값으로 데이터를 넣어주면 jsp에서 꺼내서 사용가능
 							, Model model) {
 		// SELECT * FROM MEMBER_tBL WHERE MEMBER_ID = ?
 		// Exception 발생 시 에러메시지를 출력하기 위해 try ~ catch 설정
 		try {
+			String memberId = (String)session.getAttribute("memberId"); // session을 이용하여 쿼리스트링 숨길때
 			Member member = service.getMemberById(memberId);
 			if(member != null) {
 				model.addAttribute("member", member);

@@ -24,7 +24,13 @@
 		<c:if test="${ memberId ne null }">
 			${ memberId }님 환영합니다. <a href="/member/logout.kh">로그아웃</a><br>
 			<!-- a태그 .kh 뒤에 ? 가 필요한가 고민. 쿼리문 생각해보면 필요함 -->
-			<a href="/member/mypage.kh?memberId=${ memberId }">마이페이지</a>
+			<!-- <a href="/member/mypage.kh?memberId=${ memberId }">마이페이지</a> -->
+			<form action="/member/mypage.kh" method="post">
+<%-- 				<input type="hidden" name="memberId" value="${ memberId }"> --%>
+				<input type="submit" value="마이페이지">
+			</form>
+			<a href="/member/mypage.kh">마이페이지</a>
+			<a href="/board/list.kh">게시판</a>
 		</c:if>
 	</body>
 </html>
