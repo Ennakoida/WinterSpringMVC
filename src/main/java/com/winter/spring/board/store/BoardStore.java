@@ -40,4 +40,12 @@ public interface BoardStore {
 	 */
 	Board selectBoardByNo(SqlSession session, int boardNo);
 
+	/**
+	 * 게시글 삭제 Store
+	 * @param session
+	 * @param boardNo
+	 * @return
+	 */
+	int deleteBoard(SqlSession session, int boardNo);
+
 }

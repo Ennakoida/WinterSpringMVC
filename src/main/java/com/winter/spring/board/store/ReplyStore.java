@@ -24,6 +24,14 @@ public interface ReplyStore {
 	 */
 	int updateReply(SqlSession session, Reply reply);
 
+	/** 
+	 * 게시글 댓글 삭제 Store
+	 * @param session
+	 * @param reply
+	 * @return
+	 */
+	int deleteReply(SqlSession session, Reply reply);
+
 	/**
 	 * 댓글 전체 조회 Store
 	 * @param session

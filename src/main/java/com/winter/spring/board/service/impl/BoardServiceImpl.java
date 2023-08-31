@@ -26,6 +26,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	public int deleteBoard(int boardNo) {
+		int result = bStore.deleteBoard(session, boardNo);
+		return result;
+	}
+
+	@Override
 	public int getListCount() {
 		int result = bStore.selectListCount(session);
 		return result;

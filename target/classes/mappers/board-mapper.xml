@@ -26,6 +26,10 @@
 	<update id="updateBoard">
 		UPDATE BOARD_TBL SET BOARD_TITLE = #{ boardTitle }, BOARD_CONTENT = #{ boardContent }, BOARD_FILENAME = #{ boardFileName }, BOARD_FILERENAME = #{ boardFileRename }, BOARD_FILEPATH = #{ boardFilePath }, BOARD_FILELENGTH = #{ boardFileLength }, N_UPDATE_DATE = DEFAULT WHERE BOARD_NO = #{ boardNo }
 	</update>
+	
+	<delete id="deleteBoard">
+		DELETE FROM BOARD_TBL WHERE BOARD_NO = #{ boardNo }
+	</delete>
 
 	<select id="selectBoardList" resultMap="boardResultMap">
 		SELECT * FROM BOARD_TBL ORDER BY BOARD_NO DESC

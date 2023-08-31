@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -127,6 +128,40 @@ public class BoardController {
 		}
 		return mv;
 	}
+	
+	@RequestMapping(value="/board/delete.kh", method=RequestMethod.GET)
+	public ModelAndView deleteBoard(int boardNo
+									 , String boardWriter
+									 , HttpSession session 
+ 									 , ModelAndView mv) {
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			if(boardWriter != null && boardWriter.equals(memberId)) {
+				int result = bService.deleteBoard(boardNo);
+				if(result > 0) {
+					mv.setViewName("redirect:/board/list.kh");
+				} else {
+					mv.addObject("msg", "게시글 삭제에 실패했습니다..");
+					mv.addObject("error", "게시글 삭제 실패");
+					mv.addObject("url", "/board/list.kh");
+					mv.setViewName("common/errorPage");
+				}
+			} else {
+				mv.addObject("msg", "게시글 작성자가 아닙니다..");
+				mv.addObject("error", "게시글 삭제 실패");
+				mv.addObject("url", "/board/list.kh");
+				mv.setViewName("common/errorPage");
+			}
+		} catch (Exception e) {
+			mv.addObject("msg", "게시글 삭제에 실패했습니다..");
+			mv.addObject("error", e.getMessage());
+			mv.addObject("url", "/board/list.kh");
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
+	
 	
 	public Map<String, Object> saveFile(HttpServletRequest request, MultipartFile uploadFile) throws Exception, IOException {
 		Map<String, Object> fileMap = new HashMap<String, Object>();

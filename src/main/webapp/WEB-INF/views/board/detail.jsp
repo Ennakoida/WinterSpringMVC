@@ -33,9 +33,16 @@
 					<a href="../resources/nuploadFiles/${ board.boardFileRename }" download>${ board.boardFileName }</a>
 				</li>
 			</ul>
+			<c:url var="boardDelUrl" value="/board/delete.kh">
+				<c:param name="boardNo" value="${ board.boardNo }"></c:param>			
+				<c:param name="boardWriter" value="${ board.boardWriter }"></c:param>		
+			</c:url>
+			<c:url var="boardModifyUrl" value="/board/modify.kh">
+				<c:param name="boardNo" value="${ board.boardNo }"></c:param>			
+			</c:url>
 			<div>
-				<button type="button" onclick="showModifyPage();">수정하기</button>
-				<button>삭제하기</button>
+				<button type="button" onclick="showModifyPage('${ boardModifyUrl }');">수정하기</button>
+				<button type="button" onclick="deleteBoard('${ boardDelUrl }');">삭제하기</button>
 				<button type="button" onclick="showList();">목록으로</button>
 			</div>		
 			<hr>
@@ -64,7 +71,14 @@
 						<td>
 							<a href="javascript:void(0)" onclick="showModifyForm(this, '${ reply.replyContent }');">수정하기</a>
 <!-- 							<a href="javascript:void(0)" onclick="showModifyForm(this);">수정하기</a> -->
-							<a href="#">삭제하기</a>
+							<c:url var="delUrl" value="/reply/delete.kh">
+								<c:param name="replyNo" value="${ reply.replyNo }"></c:param>
+								<!-- 내것만 지우도록 하기 위해 추가 -->
+								<c:param name="replyWriter" value="${ reply.replyWriter }"></c:param>
+								<!-- 성공하면 디테일로 가기 위해 필요한 boardNo 셋팅 -->
+								<c:param name="refBoardNo" value="${ reply.refBoardNo }"></c:param>
+							</c:url>
+							<a href="javascript:void(0)" onclick="deleteReply('${ delUrl }');">삭제하기</a>
 						</td>
 					</tr>
 					<tr style="display: none;">
@@ -78,20 +92,27 @@
 
 <!-- 							dom을 이용 -->
 							<td colspan="3"><textarea rows="3" cols="55" name="replyContent" id="replyContent">${ reply.replyContent }</textarea>
-							<td><input type="button" onclick="replyModify('${ reply.replyNo }', '${ reply.refBoardNo }', this);" value="수정 완료"></td>
+							<td><input type="button" onclick="replyModify(this, '${ reply.replyNo }', '${ reply.refBoardNo }');" value="수정 완료"></td>
 						</form>
 					</tr>
 				</c:forEach>
 			</table>		
 			
 			<script>
-				function showModifyPage() {
-					const boardNo = "${ board.boardNo }";
-					location.href="/board/modify.kh?boardNo=" + boardNo;
+				function showModifyPage(modifyUrl) {
+					location.href = modifyUrl;
+				}
+				
+				const deleteBoard = (boardUrl) => {
+					location.href = boardUrl;
 				}
 				
 				function showList(){
 					location.href="/board/list.kh";
+				}
+				
+				function deleteReply(url){
+					location.href = url;
 				}
 			</script>
 			
@@ -132,7 +153,7 @@
 // 				}
 				
 				//DOM 프로그래밍을 이용해 form 추가
-				function replyModify(replyNo, refBoardNo, obj){
+				function replyModify(obj, replyNo, refBoardNo){
 					const form = document.createElement("form");
 					form.action="/reply/update.kh";
 					form.method="post";
@@ -149,7 +170,7 @@
 					inputTag3.type="text";
 					// this를 이용하여 수정해야함. 이대로 쓰면 다 같은 textarea value만 가져옵니다.
 // 					inputTag3.value=document.getElementById("replyContent").value;
-					inputTag3.value=obj.parentElement.nextElementSibling.querySelector('textarea').value;
+					inputTag3.value=obj.parentElement.previousElementSibling.childNodes[0].value;
 					inputTag3.name="replyContent";
 					
 					form.appendChild(inputTag1);

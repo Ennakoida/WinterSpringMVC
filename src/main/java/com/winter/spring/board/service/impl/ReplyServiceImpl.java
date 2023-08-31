@@ -31,6 +31,12 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
+	public int deleteReply(Reply reply) {
+		int result = rStore.deleteReply(session, reply);
+		return result;
+	}
+
+	@Override
 	public List<Reply> selectReplyList(int refBoardNo) {
 		List<Reply> rList = rStore.selectReplyList(session, refBoardNo);
 		return rList;
